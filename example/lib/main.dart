@@ -38,7 +38,7 @@ class ExampleApp extends StatelessWidget {
   }
 }
 
-const TIMEOUT = const Duration(seconds: 5);
+const TIMEOUT = const Duration(seconds: 3);
 
 getMessage() async {
   return new Future.delayed(TIMEOUT, () => 'Welcome to your async screen');
