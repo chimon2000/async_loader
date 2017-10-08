@@ -9,7 +9,7 @@ void main() {
 class ExampleApp extends StatelessWidget {
   final GlobalKey<AsyncLoaderState> _asyncLoaderState =
       new GlobalKey<AsyncLoaderState>();
-  // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     var _asyncLoader = new AsyncLoader(
