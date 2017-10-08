@@ -45,7 +45,10 @@ class Home extends StatelessWidget {
 
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text(title),
+        title: new Padding(
+          padding: new EdgeInsets.all(10.0),
+          child: new Text(title),
+        ),
       ),
       body: new Center(child: _asyncLoader),
       floatingActionButton: new FloatingActionButton(
