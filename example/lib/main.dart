@@ -2,36 +2,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:async_loader/async_loader.dart';
 
-const TIMEOUT = const Duration(seconds: 5);
-
-getMessage() async {
-  return new Future.delayed(TIMEOUT, () => 'Welcome to your async screen');
-}
-
 void main() {
   runApp(new ExampleApp());
 }
 
 class ExampleApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: 'Flutter Demo',
-      theme: new ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: new Home(title: 'Async Loader Demo'),
-    );
-  }
-}
-
-class Home extends StatelessWidget {
-  Home({Key key, this.title}) : super(key: key);
-  final String title;
   final GlobalKey<AsyncLoaderState> _asyncLoaderState =
       new GlobalKey<AsyncLoaderState>();
-
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     var _asyncLoader = new AsyncLoader(
@@ -43,19 +21,32 @@ class Home extends StatelessWidget {
       renderSuccess: ({data}) => new Text(data),
     );
 
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Padding(
-          padding: new EdgeInsets.all(10.0),
-          child: new Text(title),
+    return new MaterialApp(
+        title: 'Async Loader Demo',
+        theme: new ThemeData(
+          primarySwatch: Colors.blue,
         ),
-      ),
-      body: new Center(child: _asyncLoader),
-      floatingActionButton: new FloatingActionButton(
-        onPressed: () => _asyncLoaderState.currentState.reload(),
-        tooltip: 'Reload',
-        child: new Icon(Icons.refresh),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+        home: new Scaffold(
+          appBar: new AppBar(title: buildTitle('Async Loader Demo')),
+          body: new Center(child: _asyncLoader),
+          floatingActionButton: new FloatingActionButton(
+            onPressed: () => _asyncLoaderState.currentState.reload(),
+            tooltip: 'Reload',
+            child: new Icon(Icons.refresh),
+          ),
+        ));
   }
+}
+
+const TIMEOUT = const Duration(seconds: 5);
+
+getMessage() async {
+  return new Future.delayed(TIMEOUT, () => 'Welcome to your async screen');
+}
+
+buildTitle(String title) {
+  return new Padding(
+    padding: new EdgeInsets.all(10.0),
+    child: new Text('Async Loader Demo'),
+  );
 }
