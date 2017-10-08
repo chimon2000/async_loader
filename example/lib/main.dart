@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
-import '../../lib/async_loader.dart';
+import 'package:flutter/material.dart';
+import 'package:async_loader/async_loader.dart';
 
 const TIMEOUT = const Duration(seconds: 5);
 
