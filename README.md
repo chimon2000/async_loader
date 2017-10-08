@@ -2,6 +2,9 @@
 
 A flutter plugin for loading content asynchronously.
 
+![Example](https://raw.githubusercontent.com/chimon2000/async_loader/master/example/example.gif)
+
+
 ## Usage
 
 To use this plugin, add `async_loader` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/).
