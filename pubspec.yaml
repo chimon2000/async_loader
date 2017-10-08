@@ -1,8 +1,8 @@
 name: async_loader
-description: A new flutter package project.
+description: A flutter plugin for loading content asynchronously.
 version: 0.0.1
-author:
-homepage:
+author: ryan.c.edge@outlook.com
+homepage: https://github.com/chimon2000/async_loader
 
 flutter:
 
