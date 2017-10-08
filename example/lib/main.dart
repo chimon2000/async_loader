@@ -27,7 +27,7 @@ class ExampleApp extends StatelessWidget {
 }
 
 class Home extends StatefulWidget {
-  Home({GlobalKey key, this.title}) : super(key: key);
+  Home({Key key, this.title}) : super(key: key);
   final String title;
 
   @override
