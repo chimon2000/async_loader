@@ -1,0 +1,8 @@
+.DS_Store
+.atom/
+.vscode/
+.idea
+.packages
+.pub/
+packages
+pubspec.lock
