@@ -26,15 +26,9 @@ class ExampleApp extends StatelessWidget {
   }
 }
 
-class Home extends StatefulWidget {
+class Home extends StatelessWidget {
   Home({Key key, this.title}) : super(key: key);
   final String title;
-
-  @override
-  _HomeState createState() => new _HomeState();
-}
-
-class _HomeState extends State<Home> {
   final GlobalKey<AsyncLoaderState> _asyncLoaderState =
       new GlobalKey<AsyncLoaderState>();
 
@@ -51,7 +45,7 @@ class _HomeState extends State<Home> {
 
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text(widget.title),
+        title: new Text(title),
       ),
       body: new Center(child: _asyncLoader),
       floatingActionButton: new FloatingActionButton(
