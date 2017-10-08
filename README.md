@@ -6,7 +6,40 @@ A flutter plugin for loading content asynchronously.
 
 To use this plugin, add `async_loader` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/).
 
-## Example
+
+### Create instance
+
+```
+getMessage() async {
+  return new Future.delayed(TIMEOUT, () => 'Welcome to your async screen');
+}
+
+...
+
+var _asyncLoader = new AsyncLoader(
+    key: _asyncLoaderState,
+    initState: () async => await getMessage(),
+    renderLoad: () => new CircularProgressIndicator(),
+    renderError: ([error]) =>
+        new Text('Sorry, there was an error loading your joke'),
+    renderSuccess: ({data}) => new Text(data),
+);
+```
+
+### Trigger reload
+
+```
+class ExampleApp extends StatelessWidget {
+  final GlobalKey<AsyncLoaderState> _asyncLoaderState =
+      new GlobalKey<AsyncLoaderState>();
+  
+  reload() {
+      _asyncLoaderState.currentState.reloadState()
+  }
+}
+```
+
+## Full Example
 
 ```
 import 'dart:async';
@@ -20,12 +53,12 @@ void main() {
 class ExampleApp extends StatelessWidget {
   final GlobalKey<AsyncLoaderState> _asyncLoaderState =
       new GlobalKey<AsyncLoaderState>();
-  // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     var _asyncLoader = new AsyncLoader(
       key: _asyncLoaderState,
-      getInitialProps: () async => await getMessage(),
+      initState: () async => await getMessage(),
       renderLoad: () => new CircularProgressIndicator(),
       renderError: ([error]) =>
           new Text('Sorry, there was an error loading your joke'),
@@ -41,7 +74,7 @@ class ExampleApp extends StatelessWidget {
           appBar: new AppBar(title: buildTitle('Async Loader Demo')),
           body: new Center(child: _asyncLoader),
           floatingActionButton: new FloatingActionButton(
-            onPressed: () => _asyncLoaderState.currentState.reload(),
+            onPressed: () => _asyncLoaderState.currentState.reloadState(),
             tooltip: 'Reload',
             child: new Icon(Icons.refresh),
           ),
@@ -63,8 +96,3 @@ buildTitle(String title) {
 }
 ```
 
-## Getting Started
-
-For help getting started with Flutter, view our online [documentation](http://flutter.io/).
-
-For help on editing package code, view the [documentation](https://flutter.io/developing-packages/).
