@@ -31,10 +31,10 @@ class Home extends StatefulWidget {
   final String title;
 
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
+  _HomeState createState() => new _HomeState();
 }
 
-class _MyHomePageState extends State<Home> {
+class _HomeState extends State<Home> {
   final GlobalKey<AsyncLoaderState> _asyncLoaderState =
       new GlobalKey<AsyncLoaderState>();
 
