@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 typedef Widget RenderLoadCallback();
 typedef Widget RenderErrorCallback([dynamic error]);
 typedef Widget RenderSuccessCallback({dynamic data});
-typedef Future<Object> GetInitialPropsCallback();
+typedef Future<Object> InitStateCallback();
 
 enum LoadingState { Error, Loading, Success }
 
@@ -13,14 +13,14 @@ class AsyncLoader extends StatefulWidget {
   final RenderLoadCallback renderLoad;
   final RenderSuccessCallback renderSuccess;
   final RenderErrorCallback renderError;
-  final GetInitialPropsCallback getInitialProps;
+  final InitStateCallback initState;
 
   AsyncLoader(
       {Key key,
       this.renderLoad,
       this.renderSuccess,
       this.renderError,
-      this.getInitialProps})
+      this.initState})
       : super(key: key);
 
   @override
@@ -35,20 +35,20 @@ class AsyncLoaderState extends State<AsyncLoader> {
   @override
   void initState() {
     super.initState();
-    _getInitialProps();
+    _initState();
   }
 
-  reload() {
-    _getInitialProps();
+  reloadState() {
+    _initState();
   }
 
-  _getInitialProps() async {
+  _initState() async {
     setState(() {
       _loadingState = LoadingState.Loading;
     });
 
     try {
-      var data = await this.widget.getInitialProps();
+      var data = await this.widget.initState();
 
       setState(() {
         _data = data;

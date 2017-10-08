@@ -14,7 +14,7 @@ class ExampleApp extends StatelessWidget {
   Widget build(BuildContext context) {
     var _asyncLoader = new AsyncLoader(
       key: _asyncLoaderState,
-      getInitialProps: () async => await getMessage(),
+      initState: () async => await getMessage(),
       renderLoad: () => new CircularProgressIndicator(),
       renderError: ([error]) =>
           new Text('Sorry, there was an error loading your joke'),
@@ -30,7 +30,7 @@ class ExampleApp extends StatelessWidget {
           appBar: new AppBar(title: buildTitle('Async Loader Demo')),
           body: new Center(child: _asyncLoader),
           floatingActionButton: new FloatingActionButton(
-            onPressed: () => _asyncLoaderState.currentState.reload(),
+            onPressed: () => _asyncLoaderState.currentState.reloadState(),
             tooltip: 'Reload',
             child: new Icon(Icons.refresh),
           ),
