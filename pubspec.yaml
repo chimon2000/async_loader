@@ -4,8 +4,6 @@ version: 0.1.0
 author: Ryan Edge <ryan.c.edge@outlook.com>
 homepage: https://github.com/chimon2000/async_loader
 
-flutter:
-
 dependencies:
   flutter:
     sdk: flutter
@@ -14,3 +12,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   test: ^0.12.0
+
+environment:
+  sdk: ">=1.8.0 <2.0.0"

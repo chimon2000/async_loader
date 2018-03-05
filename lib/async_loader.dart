@@ -43,13 +43,17 @@ class AsyncLoaderState extends State<AsyncLoader> {
   }
 
   _initState() async {
+    if (!mounted) return;
+
     setState(() {
       _loadingState = LoadingState.Loading;
     });
 
     try {
-      var data = await this.widget.initState();
+      var data = await widget.initState();
 
+      if (!mounted) return;
+      
       setState(() {
         _data = data;
         _loadingState = LoadingState.Success;
