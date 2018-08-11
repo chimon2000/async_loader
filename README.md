@@ -4,11 +4,9 @@ A flutter plugin for loading content asynchronously.
 
 ![Example](https://raw.githubusercontent.com/chimon2000/async_loader/master/example/example.gif)
 
-
 ## Usage
 
 To use this plugin, add `async_loader` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/).
-
 
 ### Create instance
 
@@ -35,7 +33,7 @@ var _asyncLoader = new AsyncLoader(
 class ExampleApp extends StatelessWidget {
   final GlobalKey<AsyncLoaderState> _asyncLoaderState =
       new GlobalKey<AsyncLoaderState>();
-  
+
   reload() {
       _asyncLoaderState.currentState.reloadState()
   }
@@ -77,7 +75,9 @@ class ExampleApp extends StatelessWidget {
           appBar: new AppBar(title: buildTitle('Async Loader Demo')),
           body: new Center(child: _asyncLoader),
           floatingActionButton: new FloatingActionButton(
-            onPressed: () => _asyncLoaderState.currentState.reloadState(),
+            onPressed: () => _asyncLoaderState.currentState
+                .reloadState()
+                .whenComplete(() => print('finished reload')),
             tooltip: 'Reload',
             child: new Icon(Icons.refresh),
           ),
@@ -98,4 +98,3 @@ buildTitle(String title) {
   );
 }
 ```
-
