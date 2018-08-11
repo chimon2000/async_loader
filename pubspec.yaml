@@ -1,17 +1,17 @@
 name: async_loader
 description: A flutter plugin for loading content asynchronously.
-version: 0.1.1
+version: 0.1.2
 author: Ryan Edge <ryan.c.edge@outlook.com>
 homepage: https://github.com/chimon2000/async_loader
 
 dependencies:
-  flutter:
-    sdk: flutter
+    flutter:
+        sdk: flutter
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  test: ^0.12.0
+    flutter_test:
+        sdk: flutter
+    test: ^0.12.0
 
 environment:
-  sdk: ">=1.8.0 <2.0.0"
+    sdk: '>=1.20.1 <3.0.0'
