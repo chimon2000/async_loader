@@ -12,10 +12,8 @@ before_script:
     - git clone https://github.com/flutter/flutter.git --depth 1
     - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
     - flutter doctor
-script:
-    - flutter test --coverage --coverage-path=lcov.info
 cache:
     directories:
         - $HOME/.pub-cache
 script:
-  - tool/travis.sh
+    - tools/travis.sh
