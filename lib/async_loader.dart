@@ -3,24 +3,39 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 
 typedef Widget RenderLoadCallback();
+typedef Widget RenderIdleCallback();
 typedef Widget RenderErrorCallback([dynamic error]);
 typedef Widget RenderSuccessCallback({dynamic data});
-typedef Future<Object> InitStateCallback();
+typedef Widget RenderCallback(
+    {dynamic data,
+    dynamic error,
+    bool isError,
+    bool isIdle,
+    bool isLoading,
+    bool isSuccess});
+
+typedef Future<dynamic> FutureFn();
 
 enum LoadingState { Error, Loading, Success }
 
 class AsyncLoader extends StatefulWidget {
   final RenderLoadCallback renderLoad;
+  final RenderIdleCallback renderIdle;
   final RenderSuccessCallback renderSuccess;
   final RenderErrorCallback renderError;
-  final InitStateCallback initState;
+  final RenderCallback render;
+  final FutureFn fn;
+  final bool loadOnMount;
 
   AsyncLoader(
       {Key key,
-      this.renderLoad,
-      this.renderSuccess,
-      this.renderError,
-      this.initState})
+      this.renderLoad = renderEmpty,
+      this.renderSuccess = renderEmpty,
+      this.renderIdle = renderEmpty,
+      this.renderError = renderErrorEmpty,
+      this.render = renderEmpty,
+      this.fn,
+      this.loadOnMount = true})
       : super(key: key);
 
   @override
@@ -28,9 +43,8 @@ class AsyncLoader extends StatefulWidget {
 }
 
 class AsyncLoaderState extends State<AsyncLoader> {
-  var _loadingState = LoadingState.Loading;
-  dynamic _data;
-  dynamic _error;
+  Future future;
+  bool shouldLoad;
 
   @override
   void initState() {
@@ -38,41 +52,74 @@ class AsyncLoaderState extends State<AsyncLoader> {
     _initState();
   }
 
-  Future<void> reloadState() {
-    return _initState();
-  }
-
-  Future<void> _initState() async {
+  void _initState() {
     if (!mounted) return;
 
+    if (widget.loadOnMount) load();
+  }
+
+  Future load() {
+    var newFuture = widget.fn();
     setState(() {
-      _loadingState = LoadingState.Loading;
+      shouldLoad = true;
+      future = newFuture;
     });
 
-    try {
-      var data = await widget.initState();
+    return newFuture;
+  }
 
-      if (!mounted) return;
+  _renderIdle() {
+    return widget.renderIdle != null
+        ? widget.renderIdle()
+        : widget.render(isIdle: true);
+  }
 
-      setState(() {
-        _data = data;
-        _loadingState = LoadingState.Success;
-      });
-    } catch (e) {
-      print(e);
-      setState(() {
-        _error = e;
-        _data = null;
-        _loadingState = LoadingState.Error;
-      });
-    }
+  _renderLoad() {
+    return widget.renderLoad != null
+        ? widget.renderLoad()
+        : widget.render(isLoading: true);
+  }
+
+  _renderError(error) {
+    return widget.renderError != null
+        ? widget.renderError(error)
+        : widget.render(isError: true, error: error);
+  }
+
+  _renderSuccess(data) {
+    return widget.renderSuccess != null
+        ? widget.renderSuccess(data: data)
+        : widget.render(isSuccess: true, data: data);
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_loadingState == LoadingState.Loading) return widget.renderLoad();
-    if (_loadingState == LoadingState.Error) return widget.renderError(_error);
-
-    return widget.renderSuccess(data: _data);
+    return new FutureBuilder<Object>(
+        future: future,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              return _renderIdle();
+            case ConnectionState.active:
+            case ConnectionState.waiting:
+              return _renderLoad();
+            case ConnectionState.done:
+              if (snapshot.hasError) return _renderError(snapshot.error);
+              return _renderSuccess(snapshot.data);
+          }
+          return renderEmpty();
+        });
   }
 }
+
+Widget renderErrorEmpty([dynamic error]) =>
+    new Container(width: 0.0, height: 0.0);
+
+Widget renderEmpty(
+        {dynamic data,
+        dynamic error,
+        bool isError,
+        bool isIdle,
+        bool isLoading,
+        bool isSuccess}) =>
+    new Container(width: 0.0, height: 0.0);

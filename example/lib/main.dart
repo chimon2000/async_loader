@@ -14,7 +14,7 @@ class ExampleApp extends StatelessWidget {
   Widget build(BuildContext context) {
     var _asyncLoader = new AsyncLoader(
       key: _asyncLoaderState,
-      initState: () async => await getMessage(),
+      fn: getMessage,
       renderLoad: () => new CircularProgressIndicator(),
       renderError: ([error]) =>
           new Text('Sorry, there was an error loading your joke'),
@@ -31,7 +31,7 @@ class ExampleApp extends StatelessWidget {
           body: new Center(child: _asyncLoader),
           floatingActionButton: new FloatingActionButton(
             onPressed: () => _asyncLoaderState.currentState
-                .reloadState()
+                .load()
                 .whenComplete(() => print('finished reload')),
             tooltip: 'Reload',
             child: new Icon(Icons.refresh),
@@ -42,7 +42,7 @@ class ExampleApp extends StatelessWidget {
 
 const TIMEOUT = const Duration(seconds: 3);
 
-getMessage() async {
+Future<String> getMessage() {
   return new Future.delayed(TIMEOUT, () => 'Welcome to your async screen');
 }
 
