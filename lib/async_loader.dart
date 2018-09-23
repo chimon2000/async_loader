@@ -29,12 +29,12 @@ class AsyncLoader extends StatefulWidget {
 
   AsyncLoader(
       {Key key,
+      @required this.fn,
       this.renderLoad = renderEmpty,
       this.renderSuccess = renderEmpty,
       this.renderIdle = renderEmpty,
       this.renderError = renderErrorEmpty,
       this.render = renderEmpty,
-      this.fn,
       this.loadOnMount = true})
       : super(key: key);
 
