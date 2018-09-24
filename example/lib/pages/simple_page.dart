@@ -8,10 +8,12 @@ class SimplePage extends StatelessWidget {
     this.title = 'Simple Example',
     this.loadOnMount = true,
     this.fn = getMessage,
+    this.timeout = 0,
   });
 
   final bool loadOnMount;
   final String title;
+  final int timeout;
   final Future<dynamic> Function() fn;
 
   final GlobalKey<AsyncLoaderState> _asyncLoaderState =
@@ -23,10 +25,12 @@ class SimplePage extends StatelessWidget {
       key: _asyncLoaderState,
       loadOnMount: this.loadOnMount,
       fn: this.fn,
+      timeout: this.timeout,
       renderLoad: () => new CircularProgressIndicator(),
       renderError: ([error]) =>
           new Text('Sorry, there was an error loading your future'),
       renderSuccess: ({data}) => new Text(data),
+      renderIdle: ({data}) => new Text('Idle'),
     );
 
     return Scaffold(

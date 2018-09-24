@@ -6,13 +6,14 @@ typedef Widget RenderLoadCallback();
 typedef Widget RenderIdleCallback();
 typedef Widget RenderErrorCallback([dynamic error]);
 typedef Widget RenderSuccessCallback({dynamic data});
-typedef Widget RenderCallback(
-    {dynamic data,
-    dynamic error,
-    bool isError,
-    bool isIdle,
-    bool isLoading,
-    bool isSuccess});
+typedef Widget RenderCallback({
+  dynamic data,
+  dynamic error,
+  bool isError,
+  bool isIdle,
+  bool isLoading,
+  bool isSuccess,
+});
 
 typedef Future<dynamic> FutureFn();
 
@@ -26,6 +27,7 @@ class AsyncLoader extends StatefulWidget {
   final RenderCallback render;
   final FutureFn fn;
   final bool loadOnMount;
+  final int timeout;
 
   AsyncLoader({
     Key key,
@@ -36,6 +38,7 @@ class AsyncLoader extends StatefulWidget {
     this.renderError = renderErrorEmpty,
     this.render = renderEmpty,
     this.loadOnMount = true,
+    this.timeout = 0,
   }) : super(key: key);
 
   @override
@@ -59,7 +62,15 @@ class AsyncLoaderState extends State<AsyncLoader> {
   }
 
   Future load() {
-    var newFuture = widget.fn();
+    List<Future> futures = [];
+    if (this.widget.timeout > 0) {
+      futures.add(createTimeout(this.widget.timeout));
+    }
+
+    futures.add(widget.fn());
+
+    var newFuture = Future.any(futures);
+
     setState(() {
       shouldLoad = true;
       future = newFuture;
@@ -107,7 +118,7 @@ class AsyncLoaderState extends State<AsyncLoader> {
               if (snapshot.hasError) return _renderError(snapshot.error);
               return _renderSuccess(snapshot.data);
           }
-          return renderEmpty();
+          return _renderIdle();
         });
   }
 }
@@ -123,3 +134,8 @@ Widget renderEmpty(
         bool isLoading,
         bool isSuccess}) =>
     new Container(width: 0.0, height: 0.0);
+
+Future<String> createTimeout(int timeout) {
+  return Future.delayed(
+      Duration(milliseconds: timeout), () => throw ('Timeout'));
+}

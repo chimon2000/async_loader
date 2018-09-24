@@ -51,6 +51,19 @@ class HomePage extends StatelessWidget {
                   );
                 },
               ),
+              FlatButton(
+                child: Text('Timeout: 1s'),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SimplePage(
+                            timeout: 1000,
+                          ),
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         ),
