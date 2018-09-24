@@ -27,16 +27,16 @@ class AsyncLoader extends StatefulWidget {
   final FutureFn fn;
   final bool loadOnMount;
 
-  AsyncLoader(
-      {Key key,
-      @required this.fn,
-      this.renderLoad = renderEmpty,
-      this.renderSuccess = renderEmpty,
-      this.renderIdle = renderEmpty,
-      this.renderError = renderErrorEmpty,
-      this.render = renderEmpty,
-      this.loadOnMount = true})
-      : super(key: key);
+  AsyncLoader({
+    Key key,
+    @required this.fn,
+    this.renderLoad = renderEmpty,
+    this.renderSuccess = renderEmpty,
+    this.renderIdle = renderEmpty,
+    this.renderError = renderErrorEmpty,
+    this.render = renderEmpty,
+    this.loadOnMount = true,
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => new AsyncLoaderState();

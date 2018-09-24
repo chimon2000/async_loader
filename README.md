@@ -22,7 +22,7 @@ var _asyncLoader = new AsyncLoader(
     initState: () async => await getMessage(),
     renderLoad: () => new CircularProgressIndicator(),
     renderError: ([error]) =>
-        new Text('Sorry, there was an error loading your joke'),
+        new Text('Sorry, there was an error loading your future'),
     renderSuccess: ({data}) => new Text(data),
 );
 ```
@@ -62,7 +62,7 @@ class ExampleApp extends StatelessWidget {
       initState: () async => await getMessage(),
       renderLoad: () => new CircularProgressIndicator(),
       renderError: ([error]) =>
-          new Text('Sorry, there was an error loading your joke'),
+          new Text('Sorry, there was an error loading your future'),
       renderSuccess: ({data}) => new Text(data),
     );
 
