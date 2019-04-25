@@ -14,13 +14,15 @@ class AsyncLoader extends StatefulWidget {
   final RenderSuccessCallback renderSuccess;
   final RenderErrorCallback renderError;
   final InitStateCallback initState;
+  final bool forceReload;
 
   AsyncLoader(
       {Key key,
-      this.renderLoad,
-      this.renderSuccess,
-      this.renderError,
-      this.initState})
+        this.forceReload = false,
+        this.renderLoad,
+        this.renderSuccess,
+        this.renderError,
+        this.initState})
       : super(key: key);
 
   @override
@@ -31,6 +33,7 @@ class AsyncLoaderState extends State<AsyncLoader> {
   var _loadingState = LoadingState.Loading;
   dynamic _data;
   dynamic _error;
+  bool reloaded = false;
 
   @override
   void initState() {
@@ -58,6 +61,8 @@ class AsyncLoaderState extends State<AsyncLoader> {
         _data = data;
         _loadingState = LoadingState.Success;
       });
+
+      reloaded = true;
     } catch (e) {
       print(e);
       setState(() {
@@ -73,6 +78,10 @@ class AsyncLoaderState extends State<AsyncLoader> {
     if (_loadingState == LoadingState.Loading) return widget.renderLoad();
     if (_loadingState == LoadingState.Error) return widget.renderError(_error);
 
+    if (widget.forceReload && !reloaded){
+      reloadState();
+    }
+    reloaded = false;
     return widget.renderSuccess(data: _data);
   }
 }
