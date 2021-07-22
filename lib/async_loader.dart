@@ -10,13 +10,13 @@ typedef Future<Object> InitStateCallback();
 enum LoadingState { Error, Loading, Success }
 
 class AsyncLoader extends StatefulWidget {
-  final RenderLoadCallback renderLoad;
-  final RenderSuccessCallback renderSuccess;
-  final RenderErrorCallback renderError;
-  final InitStateCallback initState;
+  final RenderLoadCallback? renderLoad;
+  final RenderSuccessCallback? renderSuccess;
+  final RenderErrorCallback? renderError;
+  final InitStateCallback? initState;
 
   AsyncLoader(
-      {Key key,
+      {Key? key,
       this.renderLoad,
       this.renderSuccess,
       this.renderError,
@@ -50,7 +50,7 @@ class AsyncLoaderState extends State<AsyncLoader> {
     });
 
     try {
-      var data = await widget.initState();
+      var data = await widget.initState!();
 
       if (!mounted) return;
 
@@ -70,9 +70,9 @@ class AsyncLoaderState extends State<AsyncLoader> {
 
   @override
   Widget build(BuildContext context) {
-    if (_loadingState == LoadingState.Loading) return widget.renderLoad();
-    if (_loadingState == LoadingState.Error) return widget.renderError(_error);
+    if (_loadingState == LoadingState.Loading) return widget.renderLoad!();
+    if (_loadingState == LoadingState.Error) return widget.renderError!(_error);
 
-    return widget.renderSuccess(data: _data);
+    return widget.renderSuccess!(data: _data);
   }
 }
