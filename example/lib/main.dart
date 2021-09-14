@@ -18,7 +18,7 @@ class ExampleApp extends StatelessWidget {
       renderLoad: () => new CircularProgressIndicator(),
       renderError: ([error]) =>
           new Text('Sorry, there was an error loading your joke'),
-      renderSuccess: ({data}) => Text(data) ,
+      renderSuccess: ({data}) => Text(data),
     );
 
     return new MaterialApp(
@@ -39,7 +39,6 @@ class ExampleApp extends StatelessWidget {
         ));
   }
 }
-
 
 const TIMEOUT = const Duration(seconds: 3);
 
